@@ -2,7 +2,7 @@
 #include "test.h"
 
 void setup() {
-  iAqua::startTest::set();
+  iAqua::startTest::setUpScreen();
 }
 
 void loop() {
