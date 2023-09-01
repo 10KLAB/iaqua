@@ -20,7 +20,7 @@ namespace iAqua{
                 u8g2.drawStr(0,24,"Hello World!");
             } while ( u8g2.nextPage() );
         }
-        void buttons(){
+        void buttonsTest(){
             if(digitalRead(button1)){
                 u8g2.firstPage();
                 do {

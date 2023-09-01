@@ -8,7 +8,7 @@ namespace iAqua{
         void setupScreen();
         void helloWorld(); 
         void setupButtons();
-        void buttons();
+        void buttonsTest();
     }
 }
 

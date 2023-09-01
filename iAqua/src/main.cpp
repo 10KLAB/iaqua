@@ -8,5 +8,5 @@ void setup() {
 
 void loop() {
   iAqua::startTest::helloWorld();
-  iAqua::startTest::buttons();
+  iAqua::startTest::buttonsTest();
 }
