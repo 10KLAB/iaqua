@@ -5,8 +5,10 @@
 #ifndef TEST_H_
 namespace iAqua{
     namespace startTest{
-        void setUpScreen();
+        void setupScreen();
         void helloWorld(); 
+        void setupButtons();
+        void buttons();
     }
 }
 
