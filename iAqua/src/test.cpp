@@ -6,6 +6,7 @@
 namespace iAqua{
     namespace startTest{
         U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R0, /* EN=*/37, /* RW=*/35, /* RS=*/36, /* reset=*/34);
+        HCSR04 hcsr04(/* TRI=*/30, /* ECH=*/31);
         
         void setupScreen(){
             u8g2.begin();
@@ -44,6 +45,19 @@ namespace iAqua{
                     u8g2.drawStr(0,35,"Button3");
                 } while ( u8g2.nextPage() );
                 delay(2000);
+            }
+        }
+        void hcsrTest(){
+            float d = hcsr04.dist();
+            delay(70);
+            while ( d < 50){
+                u8g2.firstPage();
+                do {
+                    u8g2.setFont(u8g2_font_ncenB14_tr);
+                    u8g2.drawStr(0,24, "sensor OK");
+                } while ( u8g2.nextPage() );
+                d = hcsr04.dist();
+                delay(70);
             }
         }
     }
