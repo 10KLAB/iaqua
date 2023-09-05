@@ -4,13 +4,6 @@
 #define button3 45
 
 
-/*
-1.Separar las librerias por componentes, sensor de distancia, pantalla, botones
-2.En la librería de la pantalla crear una función que reciba como parámetro posición y texto a mostrar
-void printText(String text, int position)
-3.Corregir los #define a Uppercase #define BUTTON_1
-4. evitar números mágicos, ver función del sensor de distancia
-*/
 
 namespace iAqua {
 namespace startTest {

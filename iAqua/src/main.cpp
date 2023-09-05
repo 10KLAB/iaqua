@@ -1,13 +1,14 @@
 #include <Arduino.h>
-#include "test.h"
+#include "screen_mananger.h"
 
 void setup() {
-  iAqua::startTest::setupScreen();
-  iAqua::startTest::setupButtons();
+  
+  iAqua::screen::setupScreen();
+  iAqua::screen::printScreen("Hello", 30);
+
 }
 
 void loop() {
-  iAqua::startTest::helloWorld();
-  //iAqua::startTest::buttonsTest();
-  iAqua::startTest::hcsrTest();
+  delay(1000);
+
 }
