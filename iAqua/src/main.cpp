@@ -13,6 +13,7 @@ void loop() {
   // iAqua::buttons::testButtons();
   iAqua::digitalIO::testValves();
   iAqua::digitalIO::testRelays();
+  iAqua::digitalIO::testDoor();
   delay(10);
 
 }

@@ -8,6 +8,7 @@ namespace iAqua{
         bool readButton(int button);
         void testValves();
         void testRelays();
+        void testDoor();
     }
     
 }
