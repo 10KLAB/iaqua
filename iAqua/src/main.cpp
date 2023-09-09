@@ -1,14 +1,19 @@
 #include <Arduino.h>
 #include "screen_mananger.h"
+#include "digital_io.h"
 
 void setup() {
-  
+  iAqua::digitalIO::setupIO();
   iAqua::screen::setupScreen();
   iAqua::screen::printScreen("Hello", 30);
 
 }
 
 void loop() {
-  delay(1000);
+  // iAqua::buttons::testButtons();
+  iAqua::digitalIO::testValves();
+  iAqua::digitalIO::testRelays();
+  iAqua::digitalIO::testDoor();
+  delay(10);
 
 }
