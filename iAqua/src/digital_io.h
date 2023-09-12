@@ -4,6 +4,7 @@
 namespace iAqua{
     namespace digitalIO{
         void setupIO();
+        void setValve(int valve, bool state);
         void testButtons();
         bool readButton(int button);
         void testValves();
