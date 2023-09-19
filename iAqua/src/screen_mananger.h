@@ -7,6 +7,7 @@ namespace iAqua{
     namespace screen{
         void setupScreen();
         void printScreen(String text, int line);
+        void printScreenTwoLines(String text1, int line1, String text2, int line2);
     }
     
 }

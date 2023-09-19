@@ -62,6 +62,11 @@ bool readButton(int button) {
   }
   return false;
 }
+void waitLeftButton(int button) {
+  while(digitalRead(button)) {
+    delay(1);
+  }
+}
 
 void testButtons() {
 

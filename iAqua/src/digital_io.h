@@ -7,6 +7,7 @@ namespace iAqua{
         void setValve(int valve, bool state);
         void testButtons();
         bool readButton(int button);
+        void waitLeftButton(int button);
         void testValves();
         void testRelays();
         void testDoor();
