@@ -57,7 +57,7 @@ void fillContainer() {
   const int timeout = 2000;
 
   Meter1->setTotalVolume(0.00);
-
+  Serial.println("liters: " + String(liters) + " ko: " + String(ko));
   iAqua::digitalIO::setValve(FILL_VALVE, HIGH);
   verifyFillingTimeout(timeout, true);
   while ((Meter1->getTotalVolume() < liters * ko) &&

@@ -63,8 +63,22 @@ bool readButton(int button) {
   return false;
 }
 void waitLeftButton(int button) {
-  while(digitalRead(button)) {
+  while(readButton(button)) {
     delay(1);
+  }
+}
+
+bool selectYesOrNo(){
+  bool selector = false;
+  while(!selector){
+    if(readButton(CHANGE)){
+      selector = true;
+      return true;
+    }
+    if(readButton(BACK)){
+      selector = true;
+      return false;
+    }
   }
 }
 

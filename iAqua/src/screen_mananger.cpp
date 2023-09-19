@@ -1,4 +1,6 @@
 #include "screen_mananger.h"
+#define LINE_1 20
+#define LINE_2 45
 
 namespace iAqua {
 namespace screen {
@@ -12,7 +14,6 @@ void printScreen(String text, int line) {
     screen.setFont(u8g2_font_ncenB14_tr);
     screen.drawStr(0, line, myChar);
   } while (screen.nextPage());
-
 }
 
 void printScreenTwoLines(String text1, int line1, String text2, int line2) {
@@ -24,7 +25,22 @@ void printScreenTwoLines(String text1, int line1, String text2, int line2) {
     screen.drawStr(0, line1, myChar1);
     screen.drawStr(0, line2, myChar2);
   } while (screen.nextPage());
+}
 
+void toggleText(String text1_a, String text1_b, String text2_a, String text2_b) {
+  static unsigned long current_time = millis();
+  const int refresh_time = 1500;
+  static bool change_message = false;
+
+  if (millis() >= current_time + refresh_time) {
+    if (!change_message) {
+      printScreenTwoLines(text1_a, LINE_1, text1_b, LINE_2);
+    } else {
+      printScreenTwoLines(text2_a, LINE_1, text2_b, LINE_2);
+    }
+    change_message = !change_message;
+    current_time = millis();
+  }
 }
 
 } // namespace screen
