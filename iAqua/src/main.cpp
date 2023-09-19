@@ -20,6 +20,7 @@ void loop() {
   // iAqua::digitalIO::testDoor();
   // iAqua::flowMetter::testFlowMetter();
   iAqua::setup::initialiceSetup();
-  delay(10);
+
+
 
 }

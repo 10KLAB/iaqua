@@ -8,6 +8,10 @@ float readLitterAmount();
 float readKoCompensation();
 void writteLittersAmount(float liters);
 void writteKoCompensation(float ko);
+int readPrice();
+int readTimeoutFill();
+void writteFillTimeout(int timeout);
+void writtePrice(int price);
 
 } // namespace eeprom
 } // namespace iAqua

@@ -16,7 +16,7 @@ namespace setup {
 void selectLitters() {
   int liters = 1;
 
-  iAqua::screen::printScreenTwoLines("Setup LTS?", LINE_1, "Yes / No", LINE_2);
+  iAqua::screen::printScreenTwoLines("Select LTS?", LINE_1, "Yes / No", LINE_2);
   if (iAqua::digitalIO::selectYesOrNo()) {
 
     while (!iAqua::digitalIO::readButton(SELECTION)) {
@@ -66,7 +66,7 @@ void calibrateDispensation() {
   int liters = iAqua::eeprom::readLitterAmount();
   if (iAqua::digitalIO::selectYesOrNo()) {
     delay(delay_message);
-    iAqua::screen::printScreenTwoLines("Liters qty", LINE_1, String(liters),
+    iAqua::screen::printScreenTwoLines("Current lts", LINE_1, String(liters),
                                        LINE_2);
     delay(delay_message);
     iAqua::digitalIO::doorUp();
@@ -93,17 +93,85 @@ void calibrateDispensation() {
         }
       }
     }
-    
+
     iAqua::screen::printScreen("Calculating...", LINE_1);
     iAqua::eeprom::writteKoCompensation(calculateKo(real_liters));
 
     iAqua::digitalIO::doorUp();
     while (!iAqua::digitalIO::readButton(SELECTION)) {
-        iAqua::screen::toggleText("Remove", "recipient", "and press", "select");
+      iAqua::screen::toggleText("Remove", "recipient", "and press", "select");
     }
     iAqua::digitalIO::doorDown();
     delay(delay_message);
     iAqua::screen::printScreen("Exiting...", LINE_1);
+  }
+}
+
+void selectFillTimeout() {
+  const int sec_to_millis = 1000;
+  iAqua::screen::printScreenTwoLines("Fill timeout?", LINE_1, "Yes / No",
+                                     LINE_2);
+  int timeout = iAqua::eeprom::readTimeoutFill();
+  int seconds = timeout / sec_to_millis;
+  if (iAqua::digitalIO::selectYesOrNo()) {
+    while (!iAqua::digitalIO::readButton(SELECTION)) {
+      if (iAqua::digitalIO::readButton(CHANGE)) {
+        seconds += 1;
+        iAqua::digitalIO::waitLeftButton(CHANGE);
+      }
+      if (iAqua::digitalIO::readButton(BACK)) {
+        seconds -= 1;
+        if (seconds <= 1) {
+          seconds = 1;
+        }
+        iAqua::digitalIO::waitLeftButton(BACK);
+      }
+
+      static unsigned long current_time = millis();
+      const int refresh_time = 300;
+      if (millis() >= current_time + refresh_time) {
+        iAqua::screen::printScreenTwoLines("Seconds", LINE_1, String(seconds),
+                                           LINE_2);
+        current_time = millis();
+      }
+    }
+    timeout = seconds * sec_to_millis;
+    iAqua::eeprom::writteFillTimeout(timeout);
+    iAqua::screen::printScreen("Exiting...", LINE_2);
+  }
+}
+
+void selectPrice() {
+  const int int_to_pesos = 100;
+  iAqua::screen::printScreenTwoLines("Select price?", LINE_1, "Yes / No",
+                                     LINE_2);
+  int price = iAqua::eeprom::readPrice();
+  int pesos = price * int_to_pesos;
+  if (iAqua::digitalIO::selectYesOrNo()) {
+    while (!iAqua::digitalIO::readButton(SELECTION)) {
+      if (iAqua::digitalIO::readButton(CHANGE)) {
+        pesos += int_to_pesos;
+        iAqua::digitalIO::waitLeftButton(CHANGE);
+      }
+      if (iAqua::digitalIO::readButton(BACK)) {
+        pesos -= int_to_pesos;
+        if (pesos <= int_to_pesos) {
+          pesos = int_to_pesos;
+        }
+        iAqua::digitalIO::waitLeftButton(BACK);
+      }
+
+      static unsigned long current_time = millis();
+      const int refresh_time = 300;
+      if (millis() >= current_time + refresh_time) {
+        iAqua::screen::printScreenTwoLines("Seconds", LINE_1, String(pesos),
+                                           LINE_2);
+        current_time = millis();
+      }
+    }
+    price = pesos / int_to_pesos;
+    iAqua::eeprom::writtePrice(price);
+    iAqua::screen::printScreen("Exiting...", LINE_2);
   }
 }
 
@@ -114,8 +182,10 @@ void initialiceSetup() {
     iAqua::screen::printScreen("Config menu", 30);
     // delay(delay_message);
     // selectLitters();
-    delay(delay_message);
-    calibrateDispensation();
+    // delay(delay_message);
+    // calibrateDispensation();
+    // selectFillTimeout();
+    selectPrice();
   }
 }
 

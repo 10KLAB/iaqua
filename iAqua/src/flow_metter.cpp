@@ -8,6 +8,8 @@
 #define FLOWMETTER_1 20
 #define FILL_VALVE 4
 #define WASH_VALVE 5
+#define PRESSURE_SENSOR A13
+
 
 namespace iAqua {
 namespace flowMetter {
@@ -16,6 +18,7 @@ void Meter1ISR() { Meter1->count(); }
 void setupFlowMetter() {
   Meter1 = new FlowMeter(digitalPinToInterrupt(FLOWMETTER_1),
                          UncalibratedSensor, Meter1ISR, RISING);
+  pinMode(PRESSURE_SENSOR, INPUT);
 }
 
 void testFlowMetter() {
@@ -75,6 +78,28 @@ void washContainer(){
     delay(wash_time);
     iAqua::digitalIO::setValve(WASH_VALVE, LOW);
 }
+
+float readPressure(){
+  float pressure = 0;
+  float voltage = 0;
+  float pressure_average = 0;
+  const int read_cycles = 10;
+  const int delay_read = 50;
+  const float PSI_factor = 0.145038;
+  const float pressure_offset = 0.40;
+
+  for(int i = 0; i < read_cycles; i++){
+    voltage = analogRead(PRESSURE_SENSOR) * 5.00/1024;
+    pressure = (voltage - pressure_offset) * 250; //to Kpa
+    pressure_average += pressure;
+    delay(delay_read);
+  }
+  pressure = pressure_average / read_cycles;
+  pressure = pressure * PSI_factor;
+  
+  return pressure;
+}
+
 
 } // namespace flowMetter
 } // namespace iAqua
