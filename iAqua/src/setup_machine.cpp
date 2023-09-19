@@ -2,6 +2,7 @@
 #include "digital_io.h"
 #include "flow_metter.h"
 #include "screen_mananger.h"
+#include "ligth_manager.h"
 
 #define SELECTION 45
 #define CHANGE 46
@@ -10,8 +11,11 @@
 #define LINE_1 20
 #define LINE_2 45
 
+const int delay_message = 1000;
+
 namespace iAqua {
 namespace setup {
+void(* resetFunc) (void) = 0;
 
 void selectLitters() {
   int liters = 1;
@@ -48,7 +52,8 @@ void selectLitters() {
     }
   }
   iAqua::eeprom::writteLittersAmount(liters);
-  iAqua::screen::printScreen("Exiting...", 25);
+  iAqua::screen::printScreen("Exiting...", LINE_2);
+  delay(delay_message);
   //   Serial.println("liters = " + String(iAqua::eeprom::readLitterAmount()));
 }
 
@@ -60,7 +65,7 @@ float calculateKo(float liters) {
 }
 
 void calibrateDispensation() {
-  const int delay_message = 1500;
+
   iAqua::screen::printScreenTwoLines("Calibrate lts?", LINE_1, "Yes / No",
                                      LINE_2);
   int liters = iAqua::eeprom::readLitterAmount();
@@ -102,21 +107,23 @@ void calibrateDispensation() {
       iAqua::screen::toggleText("Remove", "recipient", "and press", "select");
     }
     iAqua::digitalIO::doorDown();
+    iAqua::screen::printScreen("Exiting...", LINE_2);
     delay(delay_message);
-    iAqua::screen::printScreen("Exiting...", LINE_1);
   }
 }
 
 void selectFillTimeout() {
-  const int sec_to_millis = 1000;
   iAqua::screen::printScreenTwoLines("Fill timeout?", LINE_1, "Yes / No",
                                      LINE_2);
-  int timeout = iAqua::eeprom::readTimeoutFill();
-  int seconds = timeout / sec_to_millis;
+  int seconds = iAqua::eeprom::readTimeoutFill(); 
+
   if (iAqua::digitalIO::selectYesOrNo()) {
     while (!iAqua::digitalIO::readButton(SELECTION)) {
       if (iAqua::digitalIO::readButton(CHANGE)) {
         seconds += 1;
+        if(seconds >= 255){
+          seconds = 255;
+        }
         iAqua::digitalIO::waitLeftButton(CHANGE);
       }
       if (iAqua::digitalIO::readButton(BACK)) {
@@ -135,9 +142,10 @@ void selectFillTimeout() {
         current_time = millis();
       }
     }
-    timeout = seconds * sec_to_millis;
-    iAqua::eeprom::writteFillTimeout(timeout);
+    ;
+    iAqua::eeprom::writteFillTimeout(seconds);
     iAqua::screen::printScreen("Exiting...", LINE_2);
+    delay(delay_message);
   }
 }
 
@@ -164,7 +172,7 @@ void selectPrice() {
       static unsigned long current_time = millis();
       const int refresh_time = 300;
       if (millis() >= current_time + refresh_time) {
-        iAqua::screen::printScreenTwoLines("Seconds", LINE_1, String(pesos),
+        iAqua::screen::printScreenTwoLines("Pesos", LINE_1, "$" + String(pesos),
                                            LINE_2);
         current_time = millis();
       }
@@ -172,20 +180,40 @@ void selectPrice() {
     price = pesos / int_to_pesos;
     iAqua::eeprom::writtePrice(price);
     iAqua::screen::printScreen("Exiting...", LINE_2);
+    delay(delay_message);
   }
 }
 
+void finalizeSetupMenu(){
+  iAqua::screen::printScreenTwoLines("End config?", LINE_1, "Yes / No",
+                                     LINE_2);
+  if (iAqua::digitalIO::selectYesOrNo()) {
+    iAqua::ligths::FadeOut(0, 150, 150);
+    resetFunc();
+  }
+
+}
+
 void initialiceSetup() {
-  const int delay_message = 1000;
+
   if (iAqua::digitalIO::readButton(BACK) &&
       iAqua::digitalIO::readButton(CHANGE)) {
-    iAqua::screen::printScreen("Config menu", 30);
-    // delay(delay_message);
-    // selectLitters();
-    // delay(delay_message);
-    // calibrateDispensation();
-    // selectFillTimeout();
-    selectPrice();
+    iAqua::screen::printScreen("Config menu", LINE_1);
+    iAqua::ligths::meteorRain(0, 150, 150);
+    while(true){
+      delay(delay_message);
+      selectLitters();
+      delay(delay_message);
+      calibrateDispensation();
+      delay(delay_message);
+      selectFillTimeout();
+      delay(delay_message);
+      selectPrice();
+      delay(delay_message);
+      finalizeSetupMenu();
+    }
+    // iAqua::ligths::FadeOut(0, 150, 150);
+    // iAqua::screen::printScreen("       iAqua", LINE_1);
   }
 }
 

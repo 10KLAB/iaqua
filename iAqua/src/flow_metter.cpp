@@ -57,7 +57,8 @@ void fillContainer() {
   float ko = iAqua::eeprom::readKoCompensation();
   float liters = iAqua::eeprom::readLitterAmount();
   const int refresh_period = 100;
-  const int timeout = 2000;
+  const int sec_to_millis = 1000;
+  const int timeout = iAqua::eeprom::readTimeoutFill() * sec_to_millis;
 
   Meter1->setTotalVolume(0.00);
   Serial.println("liters: " + String(liters) + " ko: " + String(ko));

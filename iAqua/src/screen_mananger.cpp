@@ -32,6 +32,10 @@ void toggleText(String text1_a, String text1_b, String text2_a, String text2_b) 
   const int refresh_time = 1500;
   static bool change_message = false;
 
+  if(millis() - current_time >= refresh_time*2){
+    change_message = false;
+  }
+
   if (millis() >= current_time + refresh_time) {
     if (!change_message) {
       printScreenTwoLines(text1_a, LINE_1, text1_b, LINE_2);

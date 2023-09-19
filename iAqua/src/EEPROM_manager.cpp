@@ -3,9 +3,9 @@
 
 
 #define LITERS_ADRSS 0
-#define K_ADRSS 5
-#define TIMEOUT_FILL_ADRSS 6
-#define PRICE_ADRSS 7
+#define K_ADRSS 4
+#define TIMEOUT_FILL_ADRSS 8
+#define PRICE_ADRSS 10
 
 namespace iAqua {
 namespace eeprom {
