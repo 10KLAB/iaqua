@@ -50,8 +50,8 @@ void selectLitters() {
         iAqua::digitalIO::waitLeftButton(BACK);
       }
     }
+    iAqua::eeprom::writteLittersAmount(liters);
   }
-  iAqua::eeprom::writteLittersAmount(liters);
   iAqua::screen::printScreen("Exiting...", LINE_2);
   delay(delay_message);
   //   Serial.println("liters = " + String(iAqua::eeprom::readLitterAmount()));
@@ -71,7 +71,7 @@ void calibrateDispensation() {
   int liters = iAqua::eeprom::readLitterAmount();
   if (iAqua::digitalIO::selectYesOrNo()) {
     delay(delay_message);
-    iAqua::screen::printScreenTwoLines("Current lts", LINE_1, String(liters),
+    iAqua::screen::printScreenTwoLines("Storaged lts", LINE_1, String(liters),
                                        LINE_2);
     delay(delay_message);
     iAqua::digitalIO::doorUp();
@@ -107,9 +107,9 @@ void calibrateDispensation() {
       iAqua::screen::toggleText("Remove", "recipient", "and press", "select");
     }
     iAqua::digitalIO::doorDown();
-    iAqua::screen::printScreen("Exiting...", LINE_2);
-    delay(delay_message);
   }
+  iAqua::screen::printScreen("Exiting...", LINE_2);
+  delay(delay_message);
 }
 
 void selectFillTimeout() {
@@ -144,9 +144,9 @@ void selectFillTimeout() {
     }
     ;
     iAqua::eeprom::writteFillTimeout(seconds);
+  }
     iAqua::screen::printScreen("Exiting...", LINE_2);
     delay(delay_message);
-  }
 }
 
 void selectPrice() {
@@ -179,9 +179,9 @@ void selectPrice() {
     }
     price = pesos / int_to_pesos;
     iAqua::eeprom::writtePrice(price);
+  }
     iAqua::screen::printScreen("Exiting...", LINE_2);
     delay(delay_message);
-  }
 }
 
 void finalizeSetupMenu(){
@@ -195,7 +195,6 @@ void finalizeSetupMenu(){
 }
 
 void initialiceSetup() {
-
   if (iAqua::digitalIO::readButton(BACK) &&
       iAqua::digitalIO::readButton(CHANGE)) {
     iAqua::screen::printScreen("Config menu", LINE_1);

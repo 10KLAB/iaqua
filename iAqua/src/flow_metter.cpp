@@ -38,7 +38,7 @@ void testFlowMetter() {
   }
 }
 
-bool verifyFillingTimeout(int timeout, bool reset) {
+bool verifyFillingTimeout(unsigned long timeout, bool reset) {
   static unsigned long current_time = 0;
 
   if (reset) {
@@ -58,11 +58,15 @@ void fillContainer() {
   float liters = iAqua::eeprom::readLitterAmount();
   const int refresh_period = 100;
   const int sec_to_millis = 1000;
-  const int timeout = iAqua::eeprom::readTimeoutFill() * sec_to_millis;
+  unsigned long int timeout = iAqua::eeprom::readTimeoutFill();
+  timeout = timeout * sec_to_millis;
 
-  Meter1->setTotalVolume(0.00);
-  Serial.println("liters: " + String(liters) + " ko: " + String(ko));
+  Serial.println("liters: " + String(liters) + " ko: " + String(ko) + " timeout: " + String(timeout));
   iAqua::digitalIO::setValve(FILL_VALVE, HIGH);
+
+  delay(3000);
+  
+  Meter1->setTotalVolume(0.00);
   verifyFillingTimeout(timeout, true);
   while ((Meter1->getTotalVolume() < liters * ko) &&
          (!verifyFillingTimeout(timeout, false))) {

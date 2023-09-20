@@ -4,6 +4,7 @@
 #include "flow_metter.h"
 #include "setup_machine.h"
 #include "ligth_manager.h"
+#include "object_detection.h"
 
 #define LINE_1 20
 #define LINE_2 45
@@ -27,5 +28,12 @@ void loop() {
   // iAqua::flowMetter::testFlowMetter();
   
   iAqua::ligths::rainbow();
+  // iAqua::flowMetter::fillContainer();
+  // iAqua::setup::initialiceSetup();
+  if(iAqua::objDetection::detectPerson()){
+    iAqua::ligths::meteorRain(10, 100, 30);
+    delay(1000);
+    iAqua::ligths::FadeOut(10, 100, 30);
+  }
 
 }

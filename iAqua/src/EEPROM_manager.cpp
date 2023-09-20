@@ -47,14 +47,12 @@ void writtePrice(int price) {
 }
 
 void writteLittersAmount(float liters) {
-  float saved_liters = 0;
   if (readLitterAmount() != liters) {
     EEPROM.put(LITERS_ADRSS, liters);
   }
 }
 
 void writteKoCompensation(float ko) {
-  float saved_ko = 0;
   if (readKoCompensation() != ko) {
     EEPROM.put(K_ADRSS, ko);
   }
