@@ -11,7 +11,7 @@ bool detectPerson() {
   int distance = 0;
   const int read_cycles = 5;
   int average_distance = 0;
-  const int detection_distance = 30;
+  const int detection_distance = 20;
   const int read_delay = 20;
   static unsigned long current_time = 0;
   const int new_read = 1000;

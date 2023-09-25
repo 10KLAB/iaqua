@@ -8,6 +8,11 @@
 
 #define LINE_1 20
 #define LINE_2 45
+#define SELECTION 45
+#define CHANGE 46
+#define BACK 47
+
+void fillSequence();
 
 void setup() {
   Serial.begin(9600);
@@ -27,13 +32,41 @@ void loop() {
   // iAqua::digitalIO::testDoor();
   // iAqua::flowMetter::testFlowMetter();
   
-  iAqua::ligths::rainbow();
   // iAqua::flowMetter::fillContainer();
   // iAqua::setup::initialiceSetup();
+  iAqua::ligths::rainbow();
+  iAqua::screen::toggleText("       iAqua", " ", "  $500 pesos", "      5 litros");
+
   if(iAqua::objDetection::detectPerson()){
+    iAqua::screen::printScreen("Bienvenido!", LINE_1);
     iAqua::ligths::meteorRain(10, 100, 30);
     delay(1000);
     iAqua::ligths::FadeOut(10, 100, 30);
+    fillSequence();
   }
 
+}
+
+void fillSequence(){
+  iAqua::digitalIO::doorUp();
+  while(!iAqua::digitalIO::readButton(SELECTION)){
+    iAqua::screen::toggleText("poner recipiente", "boca abajo", "presionar", "seleccionar");
+  }
+  iAqua::screen::printScreenTwoLines("Lavando", LINE_1, "reipiente", LINE_2);
+  iAqua::digitalIO::doorDown();
+  iAqua::flowMetter::washContainer();
+  iAqua::digitalIO::doorUp();
+
+  while(!iAqua::digitalIO::readButton(SELECTION)){
+    iAqua::screen::toggleText("poner recipiente", "boca arriba", "presionar", "seleccionar");
+  }
+  iAqua::screen::printScreenTwoLines("Llenando", LINE_1, "reipiente", LINE_2);
+  iAqua::digitalIO::doorDown();
+  iAqua::flowMetter::fillContainer();
+  iAqua::digitalIO::doorUp();
+
+  while(!iAqua::digitalIO::readButton(SELECTION)){
+    iAqua::screen::toggleText("retirar", "recipiente", "presionar", "seleccionar");
+  }
+  iAqua::digitalIO::doorDown();
 }
