@@ -221,5 +221,15 @@ void testDoor(){
   }
 }
 
+void turnOnFilters(){
+  digitalWrite(OZZONO, HIGH);
+  digitalWrite(UV_LIGTH, HIGH);
+}
+
+void turnOffFilters(){
+  digitalWrite(OZZONO, LOW);
+  digitalWrite(UV_LIGTH, LOW);
+}
+
 } // namespace digitalIO
 } // namespace iAqua

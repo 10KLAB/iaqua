@@ -5,16 +5,18 @@ namespace iAqua{
     namespace digitalIO{
         void setupIO();
         void setValve(int valve, bool state);
-        void testButtons();
+        // void testButtons();
         bool readButton(int button);
         bool selectYesOrNo();
         void waitLeftButton(int button);
-        void testValves();
-        void testRelays();
-        void testDoor();
+        // void testValves();
+        // void testRelays();
+        // void testDoor();
         void doorDown();
         void doorUp();
-        void stopDoor();
+        // void stopDoor();
+        void turnOnFilters();
+        void turnOffFilters();
     }
     
 }
