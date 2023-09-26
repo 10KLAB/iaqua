@@ -6,9 +6,29 @@
 #define K_ADRSS 4
 #define TIMEOUT_FILL_ADRSS 8
 #define PRICE_ADRSS 10
+#define CARD_ADRSS_1 11
+#define CARD_ADRSS_2 12
+#define CARD_ADRSS_3 13
+#define CARD_ADRSS_4 14
 
 namespace iAqua {
 namespace eeprom {
+String readCardUID(){
+byte uuid[4]={0, 0, 0, 0};
+int address[4] = {CARD_ADRSS_1, CARD_ADRSS_2, CARD_ADRSS_3, CARD_ADRSS_4};
+
+for(int i=0; i<4; i){
+  EEPROM.get(address[i], uuid[i]);
+}
+String string_address = String((char*)address);
+
+// byte byteArray[5];
+//   strcpy((char *)byteArray,"0123");
+//   String myString = String((char *)byteArray);
+
+//   String myString = String((char*)myByteArray);
+
+}
 
 float readLitterAmount() {
   float saved_litters = 0;
@@ -59,3 +79,5 @@ void writteKoCompensation(float ko) {
 }
 } // namespace eeprom
 } // namespace iAqua
+
+
