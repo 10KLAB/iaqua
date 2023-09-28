@@ -54,6 +54,25 @@ bool readCard() {
   }
 }
 
+
+
+void readArray(){
+  int size = 5;
+  
+  // Call the function to create an array
+  int* myArray = createArray(size);
+
+  // Print the elements of the array
+  for (int i = 0; i < size; i++) {
+    Serial.print(myArray[i]);
+    Serial.print(" ");
+  }
+  Serial.println("/////");
+
+  // Don't forget to free the memory allocated for the array
+  delete[] myArray;
+}
+
 // bool readUID()
 // {
 //   bool correctTarget = false;
