@@ -5,7 +5,8 @@
 namespace iAqua{
     namespace payment{
         void setupPayment();
-        bool readCard();
+        byte* readCard();
+        bool verifyCard();
 
     }
 }

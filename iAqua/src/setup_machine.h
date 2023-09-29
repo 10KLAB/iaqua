@@ -5,6 +5,7 @@
 namespace iAqua{
     namespace setup{
         void initialiceSetup();
+        void selectUUID();
         
     }
 }

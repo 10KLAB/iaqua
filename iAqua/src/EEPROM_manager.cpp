@@ -6,10 +6,10 @@
 #define K_ADRSS 4
 #define TIMEOUT_FILL_ADRSS 8
 #define PRICE_ADRSS 10
-#define CARD_ADRSS_1 11
-#define CARD_ADRSS_2 12
-#define CARD_ADRSS_3 13
-#define CARD_ADRSS_4 14
+#define CARD_ADRSS_1 12
+#define CARD_ADRSS_2 13
+#define CARD_ADRSS_3 14
+#define CARD_ADRSS_4 15
 
 namespace iAqua {
 namespace eeprom {
@@ -17,22 +17,16 @@ namespace eeprom {
 byte* readCardUID(){
 const int uuid_size = 4;
 byte* uuid = new byte[uuid_size];
-byte address[uuid_size] = {CARD_ADRSS_1, CARD_ADRSS_2, CARD_ADRSS_3, CARD_ADRSS_4};
+int address[uuid_size] = {CARD_ADRSS_1, CARD_ADRSS_2, CARD_ADRSS_3, CARD_ADRSS_4};
 
-for(int i=0; i<4; i){
-  EEPROM.get(address[i], uuid[i]);
+for(int i=0; i<4; i++){
+  uuid[i] = EEPROM.read(address[i]);
+  Serial.print(uuid[i]);
+  Serial.print(" ");
 }
+Serial.println(" ");
 return uuid;
 }
-
-// int* createArray(int size) {
-//   int* arr = new int[size]; // Create a dynamic integer array on the heap
-//   for (int i = 0; i < size; i++) {
-//     arr[i] = i * 2; // Fill the array with some data
-//   }
-//   return arr; // Return a pointer to the array
-// }
-
 
 float readLitterAmount() {
   float saved_litters = 0;
@@ -85,22 +79,30 @@ void writteKoCompensation(float ko) {
 void writteUUID(byte a, byte b, byte c, byte d){
   const int uuid_size = 4;
   byte* read_uuid = readCardUID();
-  byte uuid[uuid_size] = {0};
+  // byte uuid[uuid_size] = {0};
 
-  for (int i = 0; i < uuid_size; i++) {
-    uuid[i] = read_uuid[i];
-  }
+  // for (int i = 0; i < uuid_size; i++) {
+  //   uuid[i] = read_uuid[i];
+  // }
   // Don't forget to free the memory allocated for the array
-  delete[] read_uuid;
+  // delete[] read_uuid;
 
   byte incoming_uuid[uuid_size] ={a, b, c, d};
-  byte address[uuid_size] = {CARD_ADRSS_1, CARD_ADRSS_2, CARD_ADRSS_3, CARD_ADRSS_4};
+  int address[uuid_size] = {CARD_ADRSS_1, CARD_ADRSS_2, CARD_ADRSS_3, CARD_ADRSS_4};
 
   for(int i = 0; i < uuid_size; i++){
-    if(uuid[i] != incoming_uuid[i]){
-      EEPROM.put(address[i], incoming_uuid[i]);
+    Serial.print(i);
+    if(read_uuid[i] != incoming_uuid[i]){
+      Serial.println("saving uuid!!!");
+      EEPROM.write(address[i], incoming_uuid[i]);
     }
+
+    Serial.println("new uuid");
+    byte* read_uuid = readCardUID();
+    delete[] read_uuid;
   }
+
+
 
 }
 } // namespace eeprom

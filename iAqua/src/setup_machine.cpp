@@ -1,8 +1,10 @@
 #include "EEPROM_magager.h"
 #include "digital_io.h"
 #include "flow_metter.h"
-#include "screen_mananger.h"
 #include "ligth_manager.h"
+#include "payment.h"
+#include "screen_mananger.h"
+
 
 #define SELECTION 45
 #define CHANGE 46
@@ -15,7 +17,7 @@ const int delay_message = 1000;
 
 namespace iAqua {
 namespace setup {
-void(* resetFunc) (void) = 0;
+void (*resetFunc)(void) = 0;
 
 void selectLitters() {
   int liters = 1;
@@ -115,13 +117,13 @@ void calibrateDispensation() {
 void selectFillTimeout() {
   iAqua::screen::printScreenTwoLines("Fill timeout?", LINE_1, "Yes / No",
                                      LINE_2);
-  int seconds = iAqua::eeprom::readTimeoutFill(); 
+  int seconds = iAqua::eeprom::readTimeoutFill();
 
   if (iAqua::digitalIO::selectYesOrNo()) {
     while (!iAqua::digitalIO::readButton(SELECTION)) {
       if (iAqua::digitalIO::readButton(CHANGE)) {
         seconds += 1;
-        if(seconds >= 255){
+        if (seconds >= 255) {
           seconds = 255;
         }
         iAqua::digitalIO::waitLeftButton(CHANGE);
@@ -141,12 +143,11 @@ void selectFillTimeout() {
                                            LINE_2);
         current_time = millis();
       }
-    }
-    ;
+    };
     iAqua::eeprom::writteFillTimeout(seconds);
   }
-    iAqua::screen::printScreen("Exiting...", LINE_2);
-    delay(delay_message);
+  iAqua::screen::printScreen("Exiting...", LINE_2);
+  delay(delay_message);
 }
 
 void selectPrice() {
@@ -180,18 +181,43 @@ void selectPrice() {
     price = pesos / int_to_pesos;
     iAqua::eeprom::writtePrice(price);
   }
-    iAqua::screen::printScreen("Exiting...", LINE_2);
-    delay(delay_message);
+  iAqua::screen::printScreen("Exiting...", LINE_2);
+  delay(delay_message);
 }
 
-void finalizeSetupMenu(){
-  iAqua::screen::printScreenTwoLines("End config?", LINE_1, "Yes / No",
-                                     LINE_2);
+void selectUUID() {
+  iAqua::screen::printScreenTwoLines("Save card?", LINE_1, "Yes / No", LINE_2);
+  if (iAqua::digitalIO::selectYesOrNo()) {
+    iAqua::screen::printScreenTwoLines("Put card", LINE_1, "on lector", LINE_2);
+    const int uuid_size = 4;
+    byte *readed_card_uuid = iAqua::payment::readCard();
+    while (readed_card_uuid[0] == 0 && readed_card_uuid[1] == 0 &&
+           readed_card_uuid[2] == 0 && readed_card_uuid[3] == 0) {
+      readed_card_uuid = iAqua::payment::readCard();
+      for (int i = 0; i < uuid_size; i++) {
+        Serial.print(readed_card_uuid[i], HEX);
+        Serial.print(" ");
+      }
+      Serial.println(" ");
+    }
+    Serial.println("Guardar");
+
+    iAqua::eeprom::writteUUID(readed_card_uuid[0], readed_card_uuid[1],
+                              readed_card_uuid[2], readed_card_uuid[3]);
+    iAqua::screen::printScreenTwoLines("Card", LINE_1, "saved!!", LINE_2);
+    delete[] readed_card_uuid;
+    delay(delay_message);
+  }
+  iAqua::screen::printScreen("Exiting...", LINE_2);
+  delay(delay_message);
+}
+
+void finalizeSetupMenu() {
+  iAqua::screen::printScreenTwoLines("End config?", LINE_1, "Yes / No", LINE_2);
   if (iAqua::digitalIO::selectYesOrNo()) {
     iAqua::ligths::FadeOut(0, 150, 150);
     resetFunc();
   }
-
 }
 
 void initialiceSetup() {
@@ -199,7 +225,7 @@ void initialiceSetup() {
       iAqua::digitalIO::readButton(CHANGE)) {
     iAqua::screen::printScreen("Config menu", LINE_1);
     iAqua::ligths::meteorRain(0, 150, 150);
-    while(true){
+    while (true) {
       delay(delay_message);
       selectLitters();
       delay(delay_message);

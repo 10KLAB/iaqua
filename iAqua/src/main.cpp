@@ -35,18 +35,16 @@ void loop() {
   iAqua::screen::toggleText("       iAqua", " ", "  $500 pesos",
                             "      5 litros");
 
-  // if (iAqua::objDetection::detectPerson()) {
-  //   iAqua::screen::printScreen("Bienvenido!", LINE_1);
-  //   iAqua::ligths::meteorRain(10, 100, 30);
+// iAqua::objDetection::detectPerson()
+  if (iAqua::payment::verifyCard()) {
+    iAqua::screen::printScreen("Bienvenido!", LINE_1);
+    iAqua::ligths::meteorRain(10, 100, 30);
 
-  //   fillSequence();
+    fillSequence();
 
-  //   iAqua::ligths::FadeOut(10, 100, 30);
-  //   delay(1000);
-  // }
-
-  iAqua::payment::readCard();
-  delay(1000);
+    iAqua::ligths::FadeOut(10, 100, 30);
+    delay(1000);
+  }
 }
 
 bool verifyTimeout(bool reset) {
@@ -106,6 +104,7 @@ void fillSequence() {
       return;
     }
   }
+  iAqua::flowMetter::washContainer();
   iAqua::digitalIO::turnOffFilters();
   iAqua::digitalIO::doorDown();
 }
