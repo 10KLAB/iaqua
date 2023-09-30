@@ -102,6 +102,7 @@ void fillSequence() {
   iAqua::screen::printScreenTwoLines("Llenando", LINE_1, "reipiente", LINE_2);
   iAqua::digitalIO::doorDown();
   iAqua::flowMetter::fillContainer();
+  iAqua::digitalIO::turnOffFilters();
   iAqua::digitalIO::doorUp();
 
   verifyTimeout(true);
@@ -113,6 +114,7 @@ void fillSequence() {
       return;
     }
   }
+  iAqua::digitalIO::turnOnFilters();
   iAqua::flowMetter::washContainer();
   iAqua::digitalIO::turnOffFilters();
   iAqua::digitalIO::doorDown();

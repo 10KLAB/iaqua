@@ -12,6 +12,7 @@ bool detectPerson() {
   const int read_cycles = 5;
   int average_distance = 0;
   const int detection_distance = 20;
+  const int minimum_distance  = 1;
   const int read_delay = 20;
   static unsigned long current_time = 0;
   const int new_read = 1000;
@@ -26,7 +27,7 @@ bool detectPerson() {
   }
   distance = average_distance / read_cycles;
   Serial.println("distance: " + String(distance));
-  if (distance <= detection_distance) {
+  if (distance >= minimum_distance && distance <= detection_distance) {
     current_time = millis();
     return true;
   } else {
