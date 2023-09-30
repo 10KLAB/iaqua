@@ -80,19 +80,8 @@ void meteorRain(byte red, byte green, byte blue) {
   oneColor(0, 0, 0);
   const int SpeedDelay = 7;
   const byte meteorSize = 90;
-  const byte meteorTrailDecay = 200;
-  const bool meteorRandomDecay = true;
 
   for (int i = 0; i < ambientalStrip.numPixels() * 2; i++) {
-
-    // fade brightness all LEDs one step
-    // for (int j = 0; j < ambientalStrip.numPixels(); j++) {
-    //   if ((!meteorRandomDecay) || (random(10) > 5)) {
-    //     fadeToBlack(j, meteorTrailDecay);
-    //   }
-    // }
-
-    // draw meteor
     for (int j = 0; j < meteorSize; j++) {
       if ((i - j < ambientalStrip.numPixels()) && (i - j >= 0)) {
         ambientalStrip.setPixelColor(i - j, red, green, blue);

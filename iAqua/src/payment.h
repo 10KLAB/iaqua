@@ -7,6 +7,8 @@ namespace iAqua{
         void setupPayment();
         byte* readCard();
         bool verifyCard();
+        void relunchRFID();
+        bool readCoinsAmount();
 
     }
 }

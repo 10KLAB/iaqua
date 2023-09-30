@@ -62,6 +62,7 @@ bool readButton(int button) {
   }
   return false;
 }
+
 void waitLeftButton(int button) {
   while(readButton(button)) {
     delay(1);

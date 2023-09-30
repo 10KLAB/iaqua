@@ -106,5 +106,18 @@ bool verifyCard(){
   return true;
 }
 
+void relunchRFID(){
+  static int relunchTime = 10 * 1000;
+  static bool timerStart = 0;
+  static unsigned long previousTimeToRelunchRFIF = 0;
+
+  if ((millis() - previousTimeToRelunchRFIF) >= relunchTime)
+  {
+    cardReader.PCD_Init();
+    delay(4);
+    previousTimeToRelunchRFIF = millis();
+  }
+}
+
 } // namespace payment
 } // namespace iAqua
