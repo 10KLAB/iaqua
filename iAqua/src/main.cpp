@@ -28,6 +28,7 @@ void setup() {
   iAqua::audio::setupDFPlayer();
   delay(3000);
   iAqua::setup::initialiceSetup();
+
 }
 
 void loop() {
@@ -73,7 +74,7 @@ bool verifyTimeout(bool reset) {
 }
 
 void fillSequence() {
-
+  iAqua::payment::resetCoinCounter();
   iAqua::digitalIO::turnOnFilters();
   iAqua::digitalIO::doorUp();
   verifyTimeout(true);
@@ -101,8 +102,10 @@ void fillSequence() {
   }
   iAqua::screen::printScreenTwoLines("Llenando", LINE_1, "reipiente", LINE_2);
   iAqua::digitalIO::doorDown();
+  iAqua::audio::playAudioTrackLoop(1);
   iAqua::flowMetter::fillContainer();
   iAqua::digitalIO::turnOffFilters();
+  iAqua::audio::fadeOutSound();
   iAqua::digitalIO::doorUp();
 
   verifyTimeout(true);
@@ -118,6 +121,7 @@ void fillSequence() {
   iAqua::flowMetter::washContainer();
   iAqua::digitalIO::turnOffFilters();
   iAqua::digitalIO::doorDown();
+  
 }
 
 bool personDetected() {
@@ -128,6 +132,7 @@ bool personDetected() {
 
   if (new_detection) {
     if (iAqua::objDetection::detectPerson()) {
+      iAqua::audio::playAudioTrack(2);
       iAqua::screen::printScreen("Bienvenido!", LINE_1);
       iAqua::ligths::meteorRain(10, 100, 30);
       new_detection = false;

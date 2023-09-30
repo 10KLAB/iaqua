@@ -19,6 +19,10 @@ void setupDFPlayer() {
 
 void playAudioTrack(int track_number) { DFPlayer.play(track_number); }
 
+void playAudioTrackLoop(int track_number){
+  DFPlayer.loop(track_number);
+}
+
 void fadeOutSound() {
     const int fade_out_delay = 1;
     const int stop_delay = 150;

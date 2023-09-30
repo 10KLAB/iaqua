@@ -9,6 +9,7 @@ namespace iAqua{
         bool verifyCard();
         void relunchRFID();
         bool readCoinsAmount();
+        void resetCoinCounter();
 
     }
 }
