@@ -102,7 +102,7 @@ void fillSequence() {
   }
   iAqua::screen::printScreenTwoLines("Llenando", LINE_1, "reipiente", LINE_2);
   iAqua::digitalIO::doorDown();
-  iAqua::audio::playAudioTrackLoop(1);
+  iAqua::audio::playAudioTrack(1);
   iAqua::flowMetter::fillContainer();
   iAqua::digitalIO::turnOffFilters();
   iAqua::audio::fadeOutSound();
@@ -128,7 +128,7 @@ bool personDetected() {
   static bool new_detection = true;
   static bool reset = false;
   static unsigned long current_time = 0;
-  const int new_detection_delay = 5000;
+  const int new_detection_delay = 15000;
 
   if (new_detection) {
     if (iAqua::objDetection::detectPerson()) {
