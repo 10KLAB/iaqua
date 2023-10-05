@@ -24,7 +24,7 @@ void setup() {
   iAqua::payment::setupPayment();
   iAqua::flowMetter::setupFlowMetter();
   iAqua::screen::setupScreen();
-  iAqua::screen::printScreen("iaquA", LINE_1);
+  iAqua::screen::printScreen("iAquA", LINE_1);
   iAqua::ligths::setupLigths();
   iAqua::audio::setupDFPlayer();
   delay(3000);
@@ -49,7 +49,7 @@ void loop() {
     }
 
     iAqua::ligths::rainbow();
-    iAqua::screen::toggleText("iaquA", " ", String(liters) + liter_or_ltters, "$" + String(price) + " pesos");                          
+    iAqua::screen::toggleText("iAquA", " ", String(liters) + liter_or_ltters, "$" + String(price) + " pesos");                          
   }
 
   if (iAqua::payment::verifyCard() || iAqua::payment::readCoinsAmount()) {
