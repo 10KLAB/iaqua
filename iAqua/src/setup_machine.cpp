@@ -235,6 +235,8 @@ void initialiceSetup() {
       delay(delay_message);
       selectPrice();
       delay(delay_message);
+      selectUUID();
+      delay(delay_message);
       finalizeSetupMenu();
     }
     // iAqua::ligths::FadeOut(0, 150, 150);

@@ -7,6 +7,7 @@
 #include "screen_mananger.h"
 #include "setup_machine.h"
 #include "audio_manager.h"
+#include "EEPROM_magager.h"
 
 #define LINE_1 20
 #define LINE_2 45
@@ -23,7 +24,7 @@ void setup() {
   iAqua::payment::setupPayment();
   iAqua::flowMetter::setupFlowMetter();
   iAqua::screen::setupScreen();
-  iAqua::screen::printScreen("       iAqua", LINE_1);
+  iAqua::screen::printScreen("iAqua", LINE_1);
   iAqua::ligths::setupLigths();
   iAqua::audio::setupDFPlayer();
   delay(3000);
@@ -35,10 +36,11 @@ void loop() {
   iAqua::payment::relunchRFID();
 
   if (!personDetected()) {
+    const int pesos_convertion = 100;
+    static int price = iAqua::eeprom::readPrice()*pesos_convertion;
 
     iAqua::ligths::rainbow();
-    iAqua::screen::toggleText("       iAqua", " ", "  $500 pesos",
-                              "      5 litros");
+    iAqua::screen::toggleText("iAqua", " ", "  $" + String(price) + " pesos", "5 litros");                          
   }
 
   if (iAqua::payment::verifyCard() || iAqua::payment::readCoinsAmount()) {

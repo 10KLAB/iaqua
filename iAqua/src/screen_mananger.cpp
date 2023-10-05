@@ -7,12 +7,21 @@ namespace screen {
 U8G2_ST7920_128X64_F_SW_SPI screen(U8G2_R0, /* EN=*/37, /* RW=*/35, /* RS=*/36,
                                    /* reset=*/34);
 void setupScreen() { screen.begin(); }
+
+int centerX(String text){
+  const char *myChar = text.c_str();
+  int screen_width = screen.getDisplayWidth();
+  int text_width = screen.getStrWidth(myChar);
+  int x = (screen_width-text_width)/2;
+  return x;
+}
+
 void printScreen(String text, int line) {
   const char *myChar = text.c_str();
   screen.firstPage();
   do {
     screen.setFont(u8g2_font_ncenB14_tr);
-    screen.drawStr(0, line, myChar);
+    screen.drawStr(centerX(text), line, myChar);
   } while (screen.nextPage());
 }
 
@@ -22,10 +31,11 @@ void printScreenTwoLines(String text1, int line1, String text2, int line2) {
   screen.firstPage();
   do {
     screen.setFont(u8g2_font_ncenB14_tr);
-    screen.drawStr(0, line1, myChar1);
-    screen.drawStr(0, line2, myChar2);
+    screen.drawStr(centerX(text1), line1, myChar1);
+    screen.drawStr(centerX(text2), line2, myChar2);
   } while (screen.nextPage());
 }
+
 
 void toggleText(String text1_a, String text1_b, String text2_a, String text2_b) {
   static unsigned long current_time = millis();
