@@ -76,14 +76,22 @@ bool verifyTimeout(bool reset) {
 }
 
 void fillSequence() {
+  const int fill_audio_effect = 1;
+  const int wash_audio = 3;
+  const int fill_audio = 4;
+  const int takeout_audio = 5;
+  const int thanks_audio = 6;
+
   iAqua::payment::resetCoinCounter();
   iAqua::digitalIO::turnOnFilters();
   iAqua::digitalIO::doorUp();
   verifyTimeout(true);
+  iAqua::audio::playAudioTrack(wash_audio);
   while (!iAqua::digitalIO::readButton(SELECTION)) {
-    iAqua::screen::toggleText("poner recipiente", "boca abajo", "presionar",
+    iAqua::screen::toggleText("Recipiente", "boca abajo", "presionar",
                               "seleccionar");
     if (verifyTimeout(false)) {
+      iAqua::digitalIO::turnOffFilters();
       iAqua::digitalIO::doorDown();
       return;
     }
@@ -94,39 +102,46 @@ void fillSequence() {
   iAqua::digitalIO::doorUp();
 
   verifyTimeout(true);
+  iAqua::audio::playAudioTrack(fill_audio);
   while (!iAqua::digitalIO::readButton(SELECTION)) {
-    iAqua::screen::toggleText("poner recipiente", "boca arriba", "presionar",
+    iAqua::screen::toggleText("Rrecipiente", "boca arriba", "presionar",
                               "seleccionar");
     if (verifyTimeout(false)) {
+      iAqua::digitalIO::turnOffFilters();
       iAqua::digitalIO::doorDown();
       return;
     }
   }
   iAqua::screen::printScreenTwoLines("Llenando", LINE_1, "reipiente", LINE_2);
   iAqua::digitalIO::doorDown();
-  iAqua::audio::playAudioTrack(1);
+  iAqua::audio::playAudioTrack(fill_audio_effect);
   iAqua::flowMetter::fillContainer();
   iAqua::digitalIO::turnOffFilters();
   iAqua::audio::fadeOutSound();
   iAqua::digitalIO::doorUp();
 
   verifyTimeout(true);
+  iAqua::audio::playAudioTrack(takeout_audio);
   while (!iAqua::digitalIO::readButton(SELECTION)) {
-    iAqua::screen::toggleText("retirar", "recipiente", "presionar",
+    iAqua::screen::toggleText("Retirar", "recipiente", "presionar",
                               "seleccionar");
     if (verifyTimeout(false)) {
+      iAqua::audio::playAudioTrack(thanks_audio);
+      iAqua::digitalIO::turnOffFilters();
       iAqua::digitalIO::doorDown();
       return;
     }
   }
+  iAqua::audio::playAudioTrack(thanks_audio);
+  iAqua::digitalIO::doorDown();
   iAqua::digitalIO::turnOnFilters();
   iAqua::flowMetter::washContainer();
   iAqua::digitalIO::turnOffFilters();
-  iAqua::digitalIO::doorDown();
   
 }
 
 bool personDetected() {
+  const int welcome_audio = 2;
   static bool new_detection = true;
   static bool reset = false;
   static unsigned long current_time = 0;
@@ -134,7 +149,7 @@ bool personDetected() {
 
   if (new_detection) {
     if (iAqua::objDetection::detectPerson()) {
-      iAqua::audio::playAudioTrack(2);
+      iAqua::audio::playAudioTrack(welcome_audio);
       iAqua::screen::printScreen("Bienvenido!", LINE_1);
       iAqua::ligths::meteorRain(10, 100, 30);
       new_detection = false;

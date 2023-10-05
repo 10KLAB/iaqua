@@ -17,7 +17,11 @@ void setupDFPlayer() {
   DFPlayer.volume(30); // volúmen de 0 a 30
 }
 
-void playAudioTrack(int track_number) { DFPlayer.play(track_number); }
+void playAudioTrack(int track_number) { 
+  delay(100);
+  DFPlayer.play(track_number); 
+  delay(100);
+  }
 
 void playAudioTrackLoop(int track_number){
   DFPlayer.loop(track_number);
