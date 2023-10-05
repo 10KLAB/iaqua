@@ -9,6 +9,7 @@ namespace flowMetter {
     void fillContainer();
     float readPressure();
     void washContainer();
+    void showPressure();
 
 }
 } // namespace iAqua

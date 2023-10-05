@@ -10,6 +10,11 @@
 #define WASH_VALVE 5
 #define PRESSURE_SENSOR A13
 
+#define LINE_1 20
+#define LINE_2 45
+#define CHANGE 46
+#define BACK 47
+
 
 namespace iAqua {
 namespace flowMetter {
@@ -105,6 +110,17 @@ float readPressure(){
   return pressure;
 }
 
+void showPressure(){
+  static unsigned long current_time = 0;
+  const int show_time = 5000;
+  if(iAqua::digitalIO::readButton(CHANGE) && iAqua::digitalIO::readButton(BACK)){
+    current_time = millis();
+    while(millis() < current_time + show_time){
+      float pressure = readPressure();
+      iAqua::screen::printScreenTwoLines("Pressure", LINE_1, String(pressure) + " PSI", LINE_2);
+    }
+  }
+}
 
 
 } // namespace flowMetter

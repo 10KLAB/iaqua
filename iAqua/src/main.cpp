@@ -34,13 +34,22 @@ void setup() {
 
 void loop() {
   iAqua::payment::relunchRFID();
+  iAqua::flowMetter::showPressure();
 
   if (!personDetected()) {
     const int pesos_convertion = 100;
     static int price = iAqua::eeprom::readPrice()*pesos_convertion;
+    static int liters = iAqua::eeprom::readLitterAmount();
+    String liter_or_ltters = "";
+    if(liters > 1){
+      liter_or_ltters = " litros";
+    }
+    else{
+      liter_or_ltters = " litro";
+    }
 
     iAqua::ligths::rainbow();
-    iAqua::screen::toggleText("iAqua", " ", "  $" + String(price) + " pesos", "5 litros");                          
+    iAqua::screen::toggleText("iAqua", " ", "  $" + String(price) + " pesos", String(liters) + liter_or_ltters);                          
   }
 
   if (iAqua::payment::verifyCard() || iAqua::payment::readCoinsAmount()) {
@@ -170,3 +179,4 @@ bool personDetected() {
     return false;
   }
 }
+
