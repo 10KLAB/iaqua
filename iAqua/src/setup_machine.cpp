@@ -13,6 +13,9 @@
 #define LINE_1 20
 #define LINE_2 45
 
+#define FILL_VALVE 4
+#define WASH_VALVE 5
+
 const int delay_message = 1000;
 
 namespace iAqua {
@@ -220,6 +223,23 @@ void finalizeSetupMenu() {
   }
 }
 
+void primeSystem(){
+  iAqua::screen::printScreenTwoLines("Prime?", LINE_1, "Yes / No", LINE_2);
+  if (iAqua::digitalIO::selectYesOrNo()) {
+    iAqua::screen::printScreenTwoLines("Keep pressed", LINE_1, "select", LINE_2);
+    while (!iAqua::digitalIO::readButton(SELECTION)) {
+      delay(1);
+    }
+    iAqua::digitalIO::setValve(FILL_VALVE, HIGH);
+    while(iAqua::digitalIO::readButton(SELECTION)){
+      delay(1);
+    }
+    iAqua::digitalIO::setValve(FILL_VALVE, LOW);
+  }
+  iAqua::screen::printScreen("Exiting...", LINE_2);
+  delay(delay_message);
+}
+
 void initialiceSetup() {
   if (iAqua::digitalIO::readButton(BACK) &&
       iAqua::digitalIO::readButton(CHANGE)) {
@@ -236,6 +256,8 @@ void initialiceSetup() {
       selectPrice();
       delay(delay_message);
       selectUUID();
+      delay(delay_message);
+      primeSystem();
       delay(delay_message);
       finalizeSetupMenu();
     }
