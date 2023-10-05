@@ -91,7 +91,7 @@ void fillSequence() {
   const int takeout_audio = 5;
   const int thanks_audio = 6;
 
-  iAqua::payment::resetCoinCounter();
+  
   iAqua::digitalIO::turnOnFilters();
   iAqua::digitalIO::doorUp();
   verifyTimeout(true);
@@ -101,6 +101,7 @@ void fillSequence() {
                               "seleccionar");
     if (verifyTimeout(false)) {
       iAqua::digitalIO::turnOffFilters();
+      iAqua::payment::resetCoinCounter();
       iAqua::digitalIO::doorDown();
       return;
     }
@@ -118,6 +119,7 @@ void fillSequence() {
     if (verifyTimeout(false)) {
       iAqua::digitalIO::turnOffFilters();
       iAqua::digitalIO::doorDown();
+      iAqua::payment::resetCoinCounter();
       return;
     }
   }
@@ -138,9 +140,11 @@ void fillSequence() {
       iAqua::audio::playAudioTrack(thanks_audio);
       iAqua::digitalIO::turnOffFilters();
       iAqua::digitalIO::doorDown();
+      iAqua::payment::resetCoinCounter();
       return;
     }
   }
+  iAqua::payment::resetCoinCounter();
   iAqua::audio::playAudioTrack(thanks_audio);
   iAqua::digitalIO::doorDown();
   iAqua::digitalIO::turnOnFilters();
