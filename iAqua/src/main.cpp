@@ -49,7 +49,7 @@ void loop() {
     }
 
     iAqua::ligths::rainbow();
-    iAqua::screen::toggleText("iAqua", " ", "  $" + String(price) + " pesos", String(liters) + liter_or_ltters);                          
+    iAqua::screen::toggleText("iAqua", " ", String(liters) + liter_or_ltters, "$" + String(price) + " pesos");                          
   }
 
   if (iAqua::payment::verifyCard() || iAqua::payment::readCoinsAmount()) {
