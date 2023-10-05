@@ -75,6 +75,7 @@ void calibrateDispensation() {
                                      LINE_2);
   int liters = iAqua::eeprom::readLitterAmount();
   if (iAqua::digitalIO::selectYesOrNo()) {
+    iAqua::eeprom::writteKoCompensation(1);
     delay(delay_message);
     iAqua::screen::printScreenTwoLines("Storaged lts", LINE_1, String(liters),
                                        LINE_2);
